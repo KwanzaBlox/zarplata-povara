@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#4f35d5"><title>Зарплата повара</title>
+<style>
+:root{--p:#4f35d5;--bg:#f5f5fb;--ink:#19172a;--muted:#747287;--line:#e8e6f3;--green:#128451}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{background:linear-gradient(135deg,#3822b7,#725df0);color:white;padding:23px 18px;border-radius:0 0 24px 24px}header h1{margin:5px 0;font-size:25px}header p{margin:0;opacity:.85;font-size:13px}
+main{max-width:680px;margin:auto;padding:15px 13px 95px}.tabs{position:fixed;bottom:0;left:0;right:0;display:flex;background:white;border-top:1px solid var(--line);padding:7px 6px calc(7px + env(safe-area-inset-bottom));z-index:5}.tabs button{flex:1;border:0;background:none;color:var(--muted);padding:7px 1px;font-size:11px;border-radius:11px}.tabs button.active{background:#efedff;color:var(--p);font-weight:700}.ico{display:block;font-size:19px;margin-bottom:2px}
+.card{background:white;border:1px solid var(--line);border-radius:17px;padding:15px;margin-bottom:12px;box-shadow:0 3px 12px #29205b08}h2{font-size:19px;margin:0 0 12px}h3{font-size:16px;margin:0 0 9px}.muted{font-size:12px;color:var(--muted)}label{display:block;font-size:13px;color:var(--muted);margin:10px 0 5px}input,select,textarea{width:100%;border:1px solid #dcd9ef;background:white;border-radius:11px;padding:11px;font:inherit;color:var(--ink)}.row{display:flex;gap:9px}.row>*{flex:1;min-width:0}.stats{display:grid;grid-template-columns:1fr 1fr;gap:9px}.stat{background:#f7f6ff;border-radius:13px;padding:12px}.lbl{font-size:12px;color:var(--muted)}.num{font-size:21px;font-weight:800;margin-top:3px}.primary{width:100%;border:0;border-radius:12px;background:var(--p);color:white;font-weight:700;padding:13px;font-size:15px;margin-top:13px}.secondary{border:1px solid #d8d3ff;background:#f5f3ff;color:var(--p);border-radius:10px;padding:8px 10px;font-weight:600}.danger{color:#b42318;border-color:#f0c5c5;background:#fff7f7}.money{color:var(--green);font-size:23px;font-weight:800}.monthnav{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.monthnav button{border:0;background:#efedff;color:var(--p);border-radius:9px;padding:8px 12px}.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.dow{text-align:center;color:var(--muted);font-size:11px;padding:4px 0}.day{border:1px solid transparent;background:#f8f7fd;border-radius:9px;min-height:56px;padding:4px 1px;text-align:center;font-size:12px;color:var(--ink)}.day.has{background:#eeebff;border-color:#d9d2ff;color:#3822b7;font-weight:700}.day.today{outline:2px solid var(--p)}.day small{display:block;font-size:8px;overflow:hidden;white-space:nowrap}.day .mark{font-size:9px;display:block;margin-top:2px}.shift{padding:12px 0;border-top:1px solid var(--line)}.shift:first-child{border-top:0}.shifthead{display:flex;justify-content:space-between;gap:8px}.shiftdate{font-weight:750}.shiftmeta{font-size:12px;color:var(--muted);margin-top:3px}.shiftmoney{text-align:right;font-weight:800;white-space:nowrap}.actions{display:flex;gap:7px;margin-top:8px}.actions button{font-size:11px}.empty{text-align:center;padding:20px 8px;color:var(--muted)}.hidden{display:none!important}.notice{font-size:12px;color:var(--muted);line-height:1.5}.preview{background:#f5f3ff;border-radius:13px;padding:13px;margin-top:12px}.previewrow{display:flex;justify-content:space-between;gap:8px;padding:4px 0}.statusgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.statusbtn{padding:11px 5px;border:1px solid #dcd9ef;background:white;border-radius:11px;font-size:13px}.statusbtn.selected{border-color:var(--p);background:#efedff;color:var(--p);font-weight:700}
+</style></head>
+<body>
+<header><div style="opacity:.8;font-size:12px">ЛИЧНЫЙ УЧЁТ · БЕЗ ИНТЕРНЕТА</div><h1>👨‍🍳 Зарплата повара</h1><p id="subtitle">Смены, часы и премии — только на этом телефоне</p></header>
+<main>
+<section id="home">
+ <div class="card"><div class="stats">
+  <div class="stat"><div class="lbl">Заработано за месяц</div><div class="num" id="monthPay">0 ₽</div></div>
+  <div class="stat"><div class="lbl">Часы за месяц</div><div class="num" id="monthHours">0</div></div>
+  <div class="stat"><div class="lbl">Премии за месяц</div><div class="num" id="monthBonus">0 ₽</div></div>
+  <div class="stat"><div class="lbl">Рабочих смен</div><div class="num" id="shiftCount">0</div></div>
+ </div></div>
+ <div class="card"><h2>📅 График по дням</h2><div class="monthnav"><button id="prevMonth">‹</button><strong id="monthLabel"></strong><button id="nextMonth">›</button></div><div class="calendar" id="calendar"></div><p class="notice">Нажми на любую дату, чтобы внести часы, кассу или отметить выходной, отпуск либо больничный.</p></div>
+ <div class="card"><h2>Последние записи</h2><div id="recent"></div></div>
+</section>
+<section id="entry" class="hidden">
+ <div class="card"><h2>✍️ Запись в графике</h2>
+  <label for="date">Дата</label><input id="date" type="date">
+  <label>Тип дня</label><div class="statusgrid" id="statusButtons">
+   <button class="statusbtn selected" data-status="work">🧑‍🍳 Рабочая смена</button><button class="statusbtn" data-status="off">🌤 Выходной</button>
+   <button class="statusbtn" data-status="vacation">🏖 Отпуск</button><button class="statusbtn" data-status="sick">🩺 Больничный</button>
+  </div>
+  <div id="workFields">
+   <div class="row"><div><label for="hours">Отработано часов</label><input id="hours" type="number" min="0" step="0.5" value="8"></div><div><label for="cash">Касса за смену, ₽</label><input id="cash" type="number" min="0" step="100" value="32000"></div></div>
+   <label for="role">Должность</label><select id="role"><option>Основной повар</option><option>Доп. повар</option></select>
+   <div class="preview"><div class="previewrow"><span class="muted">Оплата за часы</span><strong id="basePay">1 360 ₽</strong></div><div class="previewrow"><span class="muted">Премия</span><strong id="bonusPay">1 300 ₽</strong></div><hr style="border:0;border-top:1px solid #ddd6ff"><div class="muted">Итого за день</div><div class="money" id="totalPay">2 660 ₽</div></div>
+  </div>
+  <div id="nonWorkFields" class="hidden"><p class="notice" id="statusHelp">Для выбранного типа дня зарплата не начисляется автоматически. При необходимости уточни начисления у работодателя.</p></div>
+  <label for="note">Заметка (необязательно)</label><input id="note" placeholder="Например, смену поменяли">
+  <button class="primary" id="saveEntry">Сохранить запись</button><button class="secondary" id="cancelEdit" style="width:100%;margin-top:8px">Очистить форму</button>
+ </div>
+</section>
+<section id="history" class="hidden">
+ <div class="card"><h2>💰 Заработок по датам</h2><label for="filterMonth">Месяц</label><input type="month" id="filterMonth"><div class="stats" style="margin-top:10px"><div class="stat"><div class="lbl">Всего заработано</div><div class="num" id="filteredPay">0 ₽</div></div><div class="stat"><div class="lbl">Всего часов</div><div class="num" id="filteredHours">0</div></div></div></div>
+ <div class="card"><h2>Все записи за месяц</h2><div id="allEntries"></div></div>
+</section>
+<section id="settings" class="hidden"><div class="card"><h2>⚙️ Настройки</h2><label for="worker">Имя (необязательно)</label><input id="worker" placeholder="Твоё имя"><label for="defaultRole">Должность по умолчанию</label><select id="defaultRole"><option>Основной повар</option><option>Доп. повар</option></select><button class="primary" id="saveSettings">Сохранить настройки</button><p class="notice">Записи хранятся локально на этом устройстве и не передаются другим поварам. Данные могут исчезнуть при очистке данных браузера. Делай резервную копию.</p><button class="secondary" id="export">Экспортировать резервную копию</button><label for="importFile">Восстановить копию</label><input type="file" id="importFile" accept="application/json"><button class="secondary danger" id="clearData" style="margin-top:15px;width:100%">Удалить всю историю</button></div></section>
+</main>
+<nav class="tabs"><button class="active" data-tab="home"><span class="ico">▦</span>График</button><button data-tab="entry"><span class="ico">✎</span>Запись дня</button><button data-tab="history"><span class="ico">₽</span>Заработок</button><button data-tab="settings"><span class="ico">⚙</span>Настройки</button></nav>
+<script>
+const KEY='salaryCookLocal_v2',tiers=[[20000,300],[23000,500],[26000,800],[29000,1000],[32000,1300],[35000,1600],[37000,1900],[40000,2300]];
+const el=id=>document.getElementById(id),fmt=n=>Math.round(n).toLocaleString('ru-RU')+' ₽';
+const today=()=>{let d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+let data={entries:[],worker:'',role:'Доп. повар'},shownMonth=today().slice(0,7),currentStatus='work',editingId=null;
+try{data={...data,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){}
+function save(){localStorage.setItem(KEY,JSON.stringify(data))}
+function bonus(c){let b=0;tiers.forEach(([t,v])=>{if(c>=t)b=v});return b}
+function calculate(){let h=Math.max(0,Number(el('hours').value)||0),c=Math.max(0,Number(el('cash').value)||0),r=el('role').value;let b=bonus(c)*(r==='Доп. повар'?.5:1),base=h*170;el('basePay').textContent=fmt(base);el('bonusPay').textContent=fmt(b);el('totalPay').textContent=fmt(base+b);return {hours:h,cash:c,role:r,basePay:Math.round(base),bonus:Math.round(b),pay:Math.round(base+b)}}
+function statusLabel(s){return ({work:'Рабочая смена',off:'Выходной',vacation:'Отпуск',sick:'Больничный'})[s]||s}
+function statusEmoji(s){return ({work:'🧑‍🍳',off:'🌤',vacation:'🏖',sick:'🩺'})[s]||''}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function entryPay(e){return e.status==='work'?(Number(e.pay)||0):0}
+function entryHtml(e){let work=e.status==='work';return `<div class="shift"><div class="shifthead"><div><div class="shiftdate">${esc(e.date)} · ${statusEmoji(e.status)} ${statusLabel(e.status)}</div>${work?`<div class="shiftmeta">${e.hours} ч × 170 ₽ · Касса ${fmt(e.cash)}</div><div class="shiftmeta">${esc(e.role)} · Премия ${fmt(e.bonus)}</div>`:''}${e.note?`<div class="shiftmeta">${esc(e.note)}</div>`:''}</div><div class="shiftmoney">${work?fmt(e.pay):'—'}</div></div><div class="actions"><button class="secondary" onclick="editEntry('${e.id}')">Изменить</button><button class="secondary danger" onclick="deleteEntry('${e.id}')">Удалить</button></div></div>`}
+function render(){let m=today().slice(0,7),month=data.entries.filter(e=>e.date.startsWith(m)),work=month.filter(e=>e.status==='work');el('monthPay').textContent=fmt(work.reduce((a,e)=>a+entryPay(e),0));el('monthHours').textContent=work.reduce((a,e)=>a+(Number(e.hours)||0),0);el('monthBonus').textContent=fmt(work.reduce((a,e)=>a+(Number(e.bonus)||0),0));el('shiftCount').textContent=work.length;el('subtitle').textContent=(data.worker?data.worker+' · ':'')+data.role+' · данные только на этом устройстве';let sorted=[...data.entries].sort((a,b)=>b.date.localeCompare(a.date));el('recent').innerHTML=sorted.length?sorted.slice(0,4).map(entryHtml).join(''):'<div class="empty">Пока нет записей. Нажми на дату в графике или открой «Запись дня».</div>';renderCalendar();let fm=el('filterMonth').value||m,filtered=data.entries.filter(e=>e.date.startsWith(fm)),fw=filtered.filter(e=>e.status==='work');el('filteredPay').textContent=fmt(fw.reduce((a,e)=>a+entryPay(e),0));el('filteredHours').textContent=fw.reduce((a,e)=>a+(Number(e.hours)||0),0);el('allEntries').innerHTML=filtered.length?[...filtered].sort((a,b)=>b.date.localeCompare(a.date)).map(entryHtml).join(''):'<div class="empty">За этот месяц записей нет.</div>'}
+function renderCalendar(){let [y,m]=shownMonth.split('-').map(Number),first=new Date(y,m-1,1),days=new Date(y,m,0).getDate(),offset=(first.getDay()+6)%7;el('monthLabel').textContent=first.toLocaleDateString('ru-RU',{month:'long',year:'numeric'});let html=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map(x=>`<div class="dow">${x}</div>`).join('');for(let i=0;i<offset;i++)html+='<div></div>';for(let d=1;d<=days;d++){let dt=`${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`,e=data.entries.find(x=>x.date===dt),iswork=e?.status==='work';html+=`<button class="day ${e?'has':''} ${dt===today()?'today':''}" onclick="openDate('${dt}')" style="border-color:${e?'#d9d2ff':'transparent'}">${d}${e?`<small>${iswork?fmt(e.pay).replace(' ₽',''):statusLabel(e.status)}</small><span class="mark">${statusEmoji(e.status)}</span>`:''}</button>`}el('calendar').innerHTML=html}
+function switchTab(t){document.querySelectorAll('main section').forEach(s=>s.classList.toggle('hidden',s.id!==t));document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));if(t==='entry')updateStatusUI();render()}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
+function setStatus(s){currentStatus=s;document.querySelectorAll('.statusbtn').forEach(b=>b.classList.toggle('selected',b.dataset.status===s));updateStatusUI()}
+function updateStatusUI(){let work=currentStatus==='work';el('workFields').classList.toggle('hidden',!work);el('nonWorkFields').classList.toggle('hidden',work);el('statusHelp').textContent=currentStatus==='off'?'Выходной отмечается в графике. Зарплата за этот день не начисляется автоматически.':currentStatus==='vacation'?'Отпуск отмечается в графике. Отпускные приложение не рассчитывает.':'Больничный отмечается в графике. Пособие приложение не рассчитывает.';el('saveEntry').textContent=editingId?'Сохранить изменения':'Сохранить запись'}
+document.querySelectorAll('.statusbtn').forEach(b=>b.onclick=()=>setStatus(b.dataset.status));
+window.openDate=dt=>{resetForm();el('date').value=dt;let found=data.entries.find(e=>e.date===dt);if(found)fillForm(found);switchTab('entry')};
+function resetForm(){editingId=null;currentStatus='work';el('date').value=today();el('hours').value='8';el('cash').value='32000';el('role').value=data.role;el('note').value='';setStatus('work');calculate()}
+window.editEntry=id=>{let e=data.entries.find(x=>x.id===id);if(!e)return;fillForm(e);switchTab('entry')}
+function fillForm(e){editingId=e.id;el('date').value=e.date;currentStatus=e.status;el('hours').value=e.hours??8;el('cash').value=e.cash??0;el('role').value=e.role||data.role;el('note').value=e.note||'';setStatus(e.status);calculate();updateStatusUI()}
+window.deleteEntry=id=>{if(confirm('Удалить эту запись?')){data.entries=data.entries.filter(e=>e.id!==id);save();render()}}
+['hours','cash','role'].forEach(id=>el(id).addEventListener('input',calculate));
+el('saveEntry').onclick=()=>{let dt=el('date').value;if(!dt){alert('Укажи дату.');return}let entry={id:editingId||String(Date.now()),date:dt,status:currentStatus,note:el('note').value.trim()};if(currentStatus==='work'){let c=calculate();if(c.hours<=0||c.cash<0){alert('Укажи корректные часы и кассу.');return}Object.assign(entry,c)}else{entry.hours=0;entry.cash=0;entry.bonus=0;entry.pay=0;entry.role=el('role').value}if(editingId)data.entries=data.entries.map(e=>e.id===editingId?entry:e);else{data.entries=data.entries.filter(e=>e.date!==dt);data.entries.push(entry)}data.entries.sort((a,b)=>b.date.localeCompare(a.date));save();render();alert('Запись за '+dt+' сохранена.');resetForm();switchTab('home')};
+el('cancelEdit').onclick=resetForm;
+el('prevMonth').onclick=()=>{let [y,m]=shownMonth.split('-').map(Number);if(--m<1){m=12;y--}shownMonth=`${y}-${String(m).padStart(2,'0')}`;renderCalendar()};
+el('nextMonth').onclick=()=>{let [y,m]=shownMonth.split('-').map(Number);if(++m>12){m=1;y++}shownMonth=`${y}-${String(m).padStart(2,'0')}`;renderCalendar()};
+el('filterMonth').value=today().slice(0,7);el('filterMonth').onchange=render;
+el('saveSettings').onclick=()=>{data.worker=el('worker').value.trim();data.role=el('defaultRole').value;el('role').value=data.role;save();render();alert('Настройки сохранены')};
+el('worker').value=data.worker;el('defaultRole').value=data.role;el('role').value=data.role;
+el('export').onclick=()=>{let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='zarplata-povara-backup.json';a.click();URL.revokeObjectURL(a.href)};
+el('importFile').onchange=async e=>{try{let f=e.target.files[0];if(!f)return;let d=JSON.parse(await f.text());if(!Array.isArray(d.entries))throw Error();data={...data,...d};save();render();alert('Резервная копия восстановлена')}catch(_){alert('Не удалось прочитать резервную копию')}};
+el('clearData').onclick=()=>{if(confirm('Точно удалить всю историю?')){data={entries:[],worker:'',role:'Доп. повар'};save();render();el('worker').value='';el('defaultRole').value=data.role}};
+resetForm();render();calculate();
+</script></body></html>
